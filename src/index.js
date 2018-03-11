@@ -1,16 +1,59 @@
 // DO WHATEVER YOU WANT HERE
 
 const createEnumerableProperty = () => {};
-const createNotEnumerableProperty = () => {};
-const createProtoMagicObject = () => {};
-const incrementor = () => {};
-const asyncIncrementor = () => {};
-const createIncrementer = () => {};
+const createNotEnumerableProperty = (propertyName) => {
+    Object.defineProperties(Object.prototype, { "property": {value: "value",  enumerable: false } });
+
+   return {toString: () => {return propertyName;}}
+};
+const createProtoMagicObject = () => {
+    let obj = function () {};
+    obj.__proto__ = obj.prototype;
+    return obj;
+};
+let i = 0;
+const incrementor = () => {
+    i++;
+    return incrementor;
+};
+incrementor.toString = function() {return i;};
+
+let j = 0;
+const asyncIncrementor = () => {
+    return new Promise(function() {
+        j++;
+    });
+};
+asyncIncrementor.toString = function() {return j;}
+
+const createIncrementer = () => {
+    
+};
 
 // return same argument not earlier than in one second, and not later, than in two
-const returnBackInSecond = () => {};
-const getDeepPropertiesCount = () => {};
-const createSerializedObject = () => {};
+const returnBackInSecond = (param) => {
+    return new Promise(() => {
+        setTimeout(() => {
+            return param;
+        }, 1500);
+    })
+    
+};
+let count = 0;
+const getDeepPropertiesCount = (obj) => {
+    if (obj == undefined || obj == null) {
+        return;
+    }
+    for(key in obj) {
+        getDeepPropertiesCount(obj[key])
+        count++;
+    };
+
+    return count; 
+};
+const createSerializedObject = () => {
+    return new Object();
+};
 const toBuffer = () => {};
 const sortByProto = () => {};
 

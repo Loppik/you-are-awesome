@@ -21,11 +21,13 @@ incrementor.toString = function() {return i;};
 
 let j = 0;
 const asyncIncrementor = () => {
-    return new Promise(function() {
+    let success = function() {}
+    new Promise(function(success) {
         j++;
-    });
+        success();
+    }); 
+    return j;
 };
-asyncIncrementor.toString = function() {return j;}
 
 const createIncrementer = () => {
 
@@ -33,9 +35,9 @@ const createIncrementer = () => {
 
 // return same argument not earlier than in one second, and not later, than in two
 const returnBackInSecond = (param) => {
-    let resolve = function(param) {return param;}
-    return new Promise((resolve) => {
-        setTimeout(() => {return resolve(param)}, 1000);
+    let success = function(param) {return param;}
+    return new Promise((success) => {
+        setTimeout(() => {return success(param)}, 1000);
     });
 };
 
@@ -68,28 +70,3 @@ exports.returnBackInSecond = returnBackInSecond;
 exports.getDeepPropertiesCount = getDeepPropertiesCount;
 exports.createSerializedObject = createSerializedObject;
 exports.sortByProto = sortByProto;
-
-const obj = {};
-    let temp = obj;
-    for (let i = 0; i < 100; i++) {
-      temp[i] = {};
-      temp[i][i - 1] = {};
-      temp[i][i] = {};
-      temp[i][i + 1] = {};
-
-      temp = temp[i][i];
-    }
-
-    const count1 = getDeepPropertiesCount(obj);
-    console.log(count1)
-
-    for (let i = 0; i < 100; i++) {
-      temp[i] = {};
-      temp[i][i] = {};
-      temp[i][i + 1] = {};
-
-      temp = temp[i][i];
-    }
-    
-    const count2 = getDeepPropertiesCount(obj);
-    console.log(count2)

@@ -11,6 +11,7 @@ const createProtoMagicObject = () => {
     obj.__proto__ = obj.prototype;
     return obj;
 };
+
 let i = 0;
 const incrementor = () => {
     i++;
@@ -38,17 +39,18 @@ const returnBackInSecond = (param) => {
     });
 };
 
-let count = 0;
-const getDeepPropertiesCount = (obj) => {
-    if (obj == undefined || obj == null) {
-        return;
-    }
-    for(key in obj) {
-        getDeepPropertiesCount(obj[key])
-        count++;
-    };
 
-    return count; 
+const getDeepPropertiesCount = (obj) => {
+    let count = 0; 
+
+    let getPropCount = (obj) => {
+        for(key in obj) {
+            getPropCount(obj[key])
+            count++;
+        };
+        return count;
+    }
+    return getPropCount(obj); 
 };
 const createSerializedObject = () => {
     return new Object();
@@ -67,3 +69,27 @@ exports.getDeepPropertiesCount = getDeepPropertiesCount;
 exports.createSerializedObject = createSerializedObject;
 exports.sortByProto = sortByProto;
 
+const obj = {};
+    let temp = obj;
+    for (let i = 0; i < 100; i++) {
+      temp[i] = {};
+      temp[i][i - 1] = {};
+      temp[i][i] = {};
+      temp[i][i + 1] = {};
+
+      temp = temp[i][i];
+    }
+
+    const count1 = getDeepPropertiesCount(obj);
+    console.log(count1)
+
+    for (let i = 0; i < 100; i++) {
+      temp[i] = {};
+      temp[i][i] = {};
+      temp[i][i + 1] = {};
+
+      temp = temp[i][i];
+    }
+    
+    const count2 = getDeepPropertiesCount(obj);
+    console.log(count2)

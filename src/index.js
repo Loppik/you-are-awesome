@@ -27,18 +27,17 @@ const asyncIncrementor = () => {
 asyncIncrementor.toString = function() {return j;}
 
 const createIncrementer = () => {
-    
+
 };
 
 // return same argument not earlier than in one second, and not later, than in two
 const returnBackInSecond = (param) => {
-    return new Promise(() => {
-        setTimeout(() => {
-            return param;
-        }, 1500);
-    })
-    
+    let resolve = function(param) {return param;}
+    return new Promise((resolve) => {
+        setTimeout(() => {return resolve(param)}, 1000);
+    });
 };
+
 let count = 0;
 const getDeepPropertiesCount = (obj) => {
     if (obj == undefined || obj == null) {
@@ -67,3 +66,4 @@ exports.returnBackInSecond = returnBackInSecond;
 exports.getDeepPropertiesCount = getDeepPropertiesCount;
 exports.createSerializedObject = createSerializedObject;
 exports.sortByProto = sortByProto;
+

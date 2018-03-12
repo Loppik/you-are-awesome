@@ -20,17 +20,16 @@ const incrementor = () => {
 incrementor.toString = function() {return i;};
 
 let j = 0;
-const asyncIncrementor = () => {
-    let success = function() {}
-    new Promise(function(success) {
-        j++;
-        success();
-    }); 
+const asyncIncrementor = async () => {
+    j++;
     return j;
 };
 
-const createIncrementer = () => {
-
+function* createIncrementer() {
+    let value = 1;
+    while(true) {
+        yield value++;
+    };
 };
 
 // return same argument not earlier than in one second, and not later, than in two
@@ -58,7 +57,20 @@ const createSerializedObject = () => {
     return new Object();
 };
 const toBuffer = () => {};
-const sortByProto = () => {};
+const sortByProto = (ar) => {
+    let comparator = (a, b) => {
+        while(a.__proto__ != null) {
+            if (a == b) {
+                return a - b;
+            }
+            a = a.__proto__;
+        }
+        return b - a;
+    };
+    
+    return ar.sort(comparator);;
+    
+};
 
 exports.createEnumerableProperty = createEnumerableProperty;
 exports.createNotEnumerableProperty = createNotEnumerableProperty;
